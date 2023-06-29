@@ -1,8 +1,7 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
-from database import Base
-
+from app.database import Base
 
 
 class Country(Base):
@@ -13,7 +12,7 @@ class Country(Base):
     code = Column (String, unique=True)
     name = Column (String)
 
-    provinces = relationship("Province", back_populates="provinces")
+    #provinces = relationship("Province", back_populates="provinces")
 
 class Province(Base):
 
@@ -24,11 +23,11 @@ class Province(Base):
     code = Column (String)
     country_code = Column(String, ForeignKey(Country.id))
 
-    country = relationship ("Procedure", back_populates= "procedures")
+    #country = relationship ("Procedure", back_populates= "procedures")
 
 class Procedure(Base):
 
-    __tablename__ = "Country"
+    __tablename__ = "Procedure"
 
     id = Column(Integer, primary_key=True, index=True)
     type = Column (String)

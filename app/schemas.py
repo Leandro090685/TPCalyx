@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 
-class Procedure(BaseModel):
+class ProcedureResponse(BaseModel):
     code_number: str
     type: str
     province_code: str
@@ -11,24 +11,23 @@ class Procedure(BaseModel):
         orm_mode = True
 
 
-class Province(BaseModel):
+class ProvinceResponse(BaseModel):
     name:str
     code: str
-    country_code: str
+    Country_Code: str
     id:int
-    procedures: list(Procedure) = []
+    #procedures: list(Procedure) = []
 
     class Config:
         orm_mode = True
 
-class Country(BaseModel):
+class CountryResponse(BaseModel):
     name:str
     code:str
     id:int
-    provinces: list(Province) = []
+    #provinces: list(Province) = []
 
     class Config:
         orm_mode = True
 
-class Procedure(BaseModel):
-    pass
+
