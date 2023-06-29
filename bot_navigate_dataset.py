@@ -19,8 +19,3 @@ def navigate():
 
 navigate()
 
-        
-
-
-
-dnrpa-transferencias-autos-202305.csv
