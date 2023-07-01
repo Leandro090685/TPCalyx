@@ -1,27 +1,40 @@
 from pydantic import BaseModel
 
 
-class ProcedureResponse(BaseModel):
+class ProcedureCreate(BaseModel):
     code_number: str
+    type: str
+    province_code:str
+    
+    class Config:
+        orm_mode = True
+
+class ProcedureResponse(ProcedureCreate):
+    code_number:str
     type: str
     province_code: str
     id: int
 
-    class Config:
-        orm_mode = True
+class ProvinceCreate(BaseModel):
+    name:str
+    code:str
+    country_code:str
 
-
-class ProvinceResponse(BaseModel):
+class ProvinceResponse(ProvinceCreate):
     name:str
     code: str
-    Country_Code: str
+    country_code: str
     id:int
     #procedures: list(Procedure) = []
 
     class Config:
         orm_mode = True
 
-class CountryResponse(BaseModel):
+class CountryCreate(BaseModel):
+    code:str
+    name:str
+
+class CountryResponse(CountryCreate):
     name:str
     code:str
     id:int

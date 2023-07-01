@@ -30,6 +30,7 @@ class Procedure(Base):
     __tablename__ = "Procedure"
 
     id = Column(Integer, primary_key=True, index=True)
+    code_number = Column(String, unique=True)
     type = Column (String)
     province_code = Column(String, ForeignKey(Province.id))
 
