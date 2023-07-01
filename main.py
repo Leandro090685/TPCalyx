@@ -5,7 +5,7 @@ from utils.db import get_db
 from app.database import SessionLocal, engine, Base
 from app.models import Country, Procedure, Province
 from app.schemas import CountryCreate,CountryResponse, ProcedureCreate, ProcedureResponse, ProvinceCreate, ProvinceResponse
-from app.crud import create_country, create_procedure, create_province, get_country_by_code, get_all_countries, get_province_by_code, get_all_provinces, get_procedure_by_code, get_all_procedures
+from app.crud import create_country, create_procedure, create_province, get_country_by_code, get_all_countries, get_province_by_code, get_all_provinces, get_procedure_by_code, get_all_procedures, get_quantity_by_code, get_procedures_by_province
 
 
 app = FastAPI()
@@ -29,7 +29,7 @@ def province(province: ProvinceCreate, db:Session = Depends(get_db)):
     new_province = create_province(province=province, db=db)
     return new_province
 
-@app.get("/countries/{code}", response_model=CountryResponse)
+@app.get("/countries/{code}")
 def get_country(code:str, db: Session = Depends(get_db)):
     db_country = get_country_by_code(db, code)
     if db_country is None:
@@ -41,7 +41,7 @@ def read_countries(skip: int = 0, limit: int = 100, db: Session = Depends(get_db
     countries = get_all_countries(db, skip=skip, limit=limit)
     return countries
 
-@app.get("/provinces/{code}", response_model=ProvinceResponse)
+@app.get("/provinces/{code}")
 def get_province(code:str, db: Session = Depends(get_db)):
     db_province = get_province_by_code(db, code)
     if db_province is None:
@@ -65,3 +65,16 @@ def read_procedures(skip: int = 0, limit: int = 100, db: Session = Depends(get_d
     procedures = get_all_procedures(db, skip=skip, limit=limit)
     return procedures
 
+@app.get("/provinces/{code}/procedures_quantity")
+def read_quantity_procedures(code:str, db:Session=Depends(get_db)):
+    db_quantity = get_quantity_by_code(db, code)
+    if db_quantity is None:
+        raise HTTPException(status_code=404, detail="Procedure doesn't exist")
+    return db_quantity
+
+@app.get("/provinces/{code}/procedures")
+def read_procedures(code:str, db:Session = Depends(get_db)):
+    db_procedures = get_procedures_by_province(db, code)
+    if db_procedures is None:
+        raise HTTPException(status_code=404, detail="Procedure for this code province doesn't exist")
+    return db_procedures
