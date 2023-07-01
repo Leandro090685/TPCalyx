@@ -21,10 +21,9 @@ class ProvinceCreate(BaseModel):
     country_code:str
 
 class ProvinceResponse(ProvinceCreate):
+    id:int
     name:str
     code: str
-    country_code: str
-    id:int
     #procedures: list(Procedure) = []
 
     class Config:
@@ -38,7 +37,7 @@ class CountryResponse(CountryCreate):
     name:str
     code:str
     id:int
-    #provinces: list(Province) = []
+    provinces: list [ProvinceResponse] = []
 
     class Config:
         orm_mode = True
