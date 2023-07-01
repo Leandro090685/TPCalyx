@@ -5,7 +5,7 @@ from utils.db import get_db
 from app.database import SessionLocal, engine, Base
 from app.models import Country, Procedure, Province
 from app.schemas import CountryCreate,CountryResponse, ProcedureCreate, ProcedureResponse, ProvinceCreate, ProvinceResponse
-from app.crud import create_country, create_procedure, create_province, get_country_by_code, get_all_countries, get_province_by_code, get_all_provinces, get_procedure_by_code, get_all_procedures 
+from app.crud import create_country, create_procedure, create_province, get_country_by_code, get_all_countries, get_province_by_code, get_all_provinces, get_procedure_by_code, get_all_procedures
 
 
 app = FastAPI()
@@ -64,3 +64,4 @@ def get_procedure(code_number:str, db: Session = Depends(get_db)):
 def read_procedures(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     procedures = get_all_procedures(db, skip=skip, limit=limit)
     return procedures
+

@@ -9,10 +9,11 @@ class Country(Base):
     __tablename__ = "Country"
 
     id = Column (Integer, primary_key=True, index=True)
-    code = Column (String, unique=True)
     name = Column (String)
+    code = Column (String, unique=True)
+    
 
-    #provinces = relationship("Province", back_populates="provinces")
+    provinces = relationship("Province", back_populates="country")
 
 class Province(Base):
 
@@ -21,9 +22,10 @@ class Province(Base):
     id = Column (Integer, primary_key=True, index=True)
     name = Column (String)
     code = Column (String)
-    country_code = Column(String, ForeignKey(Country.id))
+    country_code = Column(String, ForeignKey(Country.code))
 
-    #country = relationship ("Procedure", back_populates= "procedures")
+    country = relationship ("Country", back_populates= "provinces")
+    procedure = relationship("Procedure", back_populates="provinces")
 
 class Procedure(Base):
 
@@ -32,7 +34,7 @@ class Procedure(Base):
     id = Column(Integer, primary_key=True, index=True)
     code_number = Column(String, unique=True)
     type = Column (String)
-    province_code = Column(String, ForeignKey(Province.id))
+    province_code = Column(String, ForeignKey(Province.code))
 
-    
+    provinces = relationship("Province", back_populates="procedure")
 

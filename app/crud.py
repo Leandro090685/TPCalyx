@@ -11,7 +11,7 @@ def create_procedure(db: Session, procedure: schemas.ProcedureCreate):
     return db_procedure
 
 def create_country(db:Session, country: schemas.CountryCreate):
-    db_country = models.Country(code = country.code, name= country.name)
+    db_country = models.Country(name= country.name, code = country.code)
     db.add(db_country)
     db.commit()
     db.refresh(db_country)

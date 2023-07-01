@@ -10,34 +10,31 @@ class ProcedureCreate(BaseModel):
         orm_mode = True
 
 class ProcedureResponse(ProcedureCreate):
-    code_number:str
-    type: str
-    province_code: str
-    id: int
+    id:int
+
 
 class ProvinceCreate(BaseModel):
     name:str
     code:str
     country_code:str
 
+
 class ProvinceResponse(ProvinceCreate):
     id:int
-    name:str
-    code: str
-    #procedures: list(Procedure) = []
-
+    #procedures : list[ProcedureResponse]
+    
     class Config:
         orm_mode = True
 
+
 class CountryCreate(BaseModel):
-    code:str
     name:str
+    code:str
+    
 
 class CountryResponse(CountryCreate):
-    name:str
-    code:str
     id:int
-    provinces: list [ProvinceResponse] = []
+    #provinces: list [] 
 
     class Config:
         orm_mode = True
