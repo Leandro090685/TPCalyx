@@ -2,7 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-from utils.initial_driver import config_chrome_driver
+from utils.initial_driver import ChromeDriverConfigurator
 from utils.download_file import download_csv
 from utils.read_csv import get_countries, get_procedure, get_province
 from utils.data_for_api import post_data_api
@@ -12,7 +12,8 @@ logger = Logs('NAVIGATE')
 
 def navigate():
     try:
-        driver = config_chrome_driver()
+        driver_configurator = ChromeDriverConfigurator() 
+        driver = driver_configurator.configure_driver()
         driver.get("https://www.datos.gob.ar")
         driver.find_element(By.LINK_TEXT, "Datasets").click()
         text = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.NAME,'q')))
@@ -41,9 +42,6 @@ def navigate():
             logger.error("ERROR: Failed to get data from one or more sources")
     except Exception as e:
         logger.error(f"ERROR WHEN POSTING THE DATA TO THE API: {e}")
-    #post_data_api(get_countries(), "http://127.0.0.1:8000/countries")
-    #post_data_api(get_province(),"http://127.0.0.1:8000/provinces")
-    #post_data_api(get_procedure(),"http://127.0.0.1:8000/procedures")
     
     
 navigate()

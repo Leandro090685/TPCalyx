@@ -5,9 +5,10 @@ from selenium import webdriver
 import os
 from logs.create_log import Logs
 
-logger = Logs('CHROME AND DRIVER')
-
-def config_chrome_driver():
+class ChromeDriverConfigurator:
+    logger = Logs('CHROME AND DRIVER')
+    
+    def configure_driver(self):
         try:
             route = ChromeDriverManager(path='./chromedriver').install()
             options = Options()
@@ -23,9 +24,8 @@ def config_chrome_driver():
             })
             s = Service(route)
             driver = webdriver.Chrome(service=s, options=options)
-            logger.info("DRIVER AND CHROME CONFIGURED CORRECTLY")
+            self.logger.info("DRIVER AND CHROME CONFIGURED CORRECTLY")
             return driver
         except Exception as e:
-            logger.error(f"ERROR WHEN INSTALLING DRIVER: {e}")
-            return e
-        
+            self.logger.error(f"ERROR WHEN INSTALLING DRIVER: {e}")
+            return e        
