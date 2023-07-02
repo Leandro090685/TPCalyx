@@ -1,5 +1,7 @@
 .env
 __pycache__
 chromedriver
-.csv
-.sqlite
+report_logs.txt
+*csv
+*sqlite
+
