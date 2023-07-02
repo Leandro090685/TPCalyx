@@ -13,7 +13,6 @@ app = FastAPI()
 Base.metadata.create_all(bind=engine)
 
 
-
 @app.post("/procedures", response_model=ProcedureResponse)
 def procedure(procedure: ProcedureCreate, db:Session = Depends(get_db)):
     new_procedure = create_procedure(procedure=procedure, db=db)
