@@ -4,7 +4,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from utils.initial_driver import ChromeDriverConfigurator
 from utils.download_file import CSVDownloader
-from utils.read_csv import get_countries, get_procedure, get_province
+from utils.read_csv import CountriesData, ProcedureData, ProvincesData
 from utils.data_for_api import DataApi
 from logs.create_log import Logs
 
@@ -24,15 +24,20 @@ def navigate():
         logger.error(f"ERROR IN THE NAVIGATION: {e}")
         driver.quit()
         return
-    
+    URL = "http://datos.jus.gob.ar/dataset/f6932e82-a039-4462-968d-7dcda77d1a3e/resource/ff17485b-6711-405f-b628-676216e4d9e0/download/dnrpa-transferencias-autos-202305.csv"
     file = CSVDownloader()
-    file.download_csv("http://datos.jus.gob.ar/dataset/f6932e82-a039-4462-968d-7dcda77d1a3e/resource/ff17485b-6711-405f-b628-676216e4d9e0/download/dnrpa-transferencias-autos-202305.csv")
+    file.download_csv(URL)
+    DATAFRAME = file.name()
     driver.quit()
+    
 
     try:
-        countries_data, countries_success = get_countries()
-        provinces_data, provinces_success = get_province()
-        procedures_data, procedures_success = get_procedure()
+        countries = CountriesData(DATAFRAME)
+        provinces = ProvincesData(DATAFRAME)
+        procedures = ProcedureData(DATAFRAME)
+        countries_data, countries_success = countries.process_data()
+        provinces_data, provinces_success = provinces.process_data()
+        procedures_data, procedures_success = procedures.process_data()
 
         if countries_success and provinces_success and procedures_success:
             data = DataApi()
