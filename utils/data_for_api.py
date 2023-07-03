@@ -1,6 +1,5 @@
 import json
 import requests
-import pandas as pd
 from logs.create_log import Logs
 
 
@@ -12,7 +11,7 @@ class DataApi:
         bodylist = json.loads(json_data)
         for i in bodylist:
             response = requests.post(url, data=json.dumps(i), headers={'Content-Type': 'application/json'})
-            if response.status_code == 200:
-                continue
-            else:
+            if response.status_code != 200:
                 self.logger.error("ERROR WHEN POSTING THE DATA TO THE API")
+                return False
+        return True

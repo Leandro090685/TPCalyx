@@ -5,7 +5,7 @@ from utils.db import get_db
 from app.database import SessionLocal, engine, Base
 from app.models import Country, Procedure, Province
 from app.schemas import CountryCreate,CountryResponse, ProcedureCreate, ProcedureResponse, ProvinceCreate, ProvinceResponse
-from app.crud import create_country, create_procedure, create_province, get_country_by_code, get_all_countries, get_province_by_code, get_all_provinces, get_procedure_by_code, get_all_procedures, get_quantity_by_code, get_procedures_by_province
+from app.crud import create_country, create_procedure, create_province, get_country_by_code, get_all_countries, get_province_by_code, get_all_provinces, get_procedure_by_code, get_all_procedures, get_quantity_by_code, get_procedures_by_province, verificate_country_by_code
 
 
 app = FastAPI()
@@ -20,8 +20,11 @@ def procedure(procedure: ProcedureCreate, db:Session = Depends(get_db)):
 
 @app.post("/countries", response_model=CountryResponse)
 def country(country: CountryCreate, db:Session = Depends(get_db)):
-    new_country = create_country(country=country, db=db)
-    return new_country
+    db_country = verificate_country_by_code(db=db, code=country.code)
+    if db_country:
+        raise HTTPException(status_code=400, detail="THE COUNTRY CODE ALREADY EXISTS")
+    return create_country(country=country, db=db)
+     
 
 @app.post("/provinces", response_model=ProvinceResponse)
 def province(province: ProvinceCreate, db:Session = Depends(get_db)):

@@ -17,7 +17,7 @@ class CSVDownloader:
                     f.write(response.content)
                 self.logger.info("CSV FILE DOWNLOADED SUCCESSFULLY")
             else:
-                self.logger.error("ERROR DOWNLOADING CSV FILE: Invalid response code")
+                self.logger.error("ERROR DOWNLOADING CSV FILE")
         except Exception as e:
             self.logger.error(f"ERROR DOWNLOADING CSV FILE: {e}")
     

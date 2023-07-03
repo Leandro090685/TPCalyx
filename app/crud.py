@@ -17,6 +17,9 @@ def create_country(db:Session, country: schemas.CountryCreate):
     db.refresh(db_country)
     return db_country
 
+def verificate_country_by_code(db: Session, code: str):
+    return db.query(models.Country).filter(models.Country.code == code).first()
+
 def create_province(db:Session, province: schemas.ProvinceCreate):
     db_province = models.Province(name = province.name, code=province.code, country_code = province.country_code)
     db.add(db_province)
