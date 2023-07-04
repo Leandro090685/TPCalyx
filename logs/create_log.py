@@ -10,7 +10,7 @@ class Logs:
         file_handler = logging.FileHandler("logs/report_logs.txt", mode='a')
         file_handler.setLevel(logging.DEBUG)
 
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s','%d/%m/%Y')
+        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s','%d/%m/%Y - %H:%M:%S')
         file_handler.setFormatter(formatter)
         
 
