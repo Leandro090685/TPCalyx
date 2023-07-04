@@ -21,8 +21,8 @@ def navigate():
         text.send_keys('Transferencias de autos')
         button_search = driver.find_element(By.CLASS_NAME, 'search-icon').click()
         WebDriverWait(driver,TIMEOUT).until(EC.element_to_be_clickable((By.PARTIAL_LINK_TEXT, 'Transferencias de autos'))).click()
-        boton_descargar = WebDriverWait(driver,TIMEOUT).until(EC.element_to_be_clickable((By.XPATH,"//*[@id='pkg-resources']/div[1]/div/a[2]")))
-        href = boton_descargar.get_attribute("href")
+        button_download = WebDriverWait(driver,TIMEOUT).until(EC.element_to_be_clickable((By.XPATH,"//*[@id='pkg-resources']/div[1]/div/a[2]")))
+        href = button_download.get_attribute("href")
         file = CSVDownloader()
         file.download_csv(href)
         file_name = file.name()
@@ -30,7 +30,7 @@ def navigate():
     except Exception as e:
         logger.error(f"ERROR IN THE NAVIGATION: {e}")
         driver.quit()
-        
+     
     try:
         countries = CountriesData(file_name)
         provinces = ProvincesData(file_name)

@@ -21,8 +21,8 @@ class Province(Base):
 
     id = Column (Integer, primary_key=True, index=True)
     name = Column (String)
-    code = Column (String)
-    country_code = Column(String, ForeignKey(Country.id)) # Preguntar a Augusto si puedo relacionar columna str con clumna int
+    code = Column (String, unique=True)
+    country_code = Column(String, ForeignKey(Country.code)) # Preguntar a Augusto si puedo relacionar columna str con clumna int
 
     country = relationship ("Country", back_populates= "provinces")
     procedure = relationship("Procedure", back_populates="provinces")
@@ -34,7 +34,7 @@ class Procedure(Base):
     id = Column(Integer, primary_key=True, index=True)
     code_number = Column(String, unique=True)
     type = Column (String)
-    province_code = Column(String, ForeignKey(Province.id)) # Preguntar a Augusto si puedo relacionar columna str con clumna int
+    province_code = Column(String, ForeignKey(Province.code)) # Preguntar a Augusto si puedo relacionar columna str con clumna int
 
     provinces = relationship("Province", back_populates="procedure")
 
