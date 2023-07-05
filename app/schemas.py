@@ -1,55 +1,75 @@
 from pydantic import BaseModel
 
+class ProcedureBase(BaseModel):
+    code_number:str
+    type:str
 
-class ProcedureCreate(BaseModel):
-    code_number: str
-    type: str
-    province_code:str
+    class Config:
+        orm_mode = True
+
+class ProcedureCreate(ProcedureBase):
+   province_code:str
     
    
 class ProcedureResponse(ProcedureCreate):
     id:int
 
-    class Config:
-        orm_mode = True
-
-class ProcedureResponseCode(BaseModel):
-    id: int
+class ProcedureResponseProvince(BaseModel):
+    id:int
     code_number:str
     type:str
 
-#---------------------------------------------------------------#
+    class Config:
+        orm_mode = True
 
-class ProvinceCreate(BaseModel):
-    name:str
-    code:str
+class ProcedureQuantityProvince(BaseModel):
+    province:str
+    procedures_quantity: int
+
+    class Config:
+        orm_mode = True
+
+    
+
+#---------------------------------------------------------------#
+class ProvinceBase(BaseModel):
+    name: str
+    code: str
+
+    class Config:
+        orm_mode = True
+
+class ProvinceCreate(ProvinceBase):
     country_code:str
 
 
-class ProvinceResponse(BaseModel):
+class ProvinceResponse(ProvinceCreate):
     id:int
-    name:str
-    code:str
+    procedures: list[ProcedureResponseProvince] = []
     
-    class Config:
-        orm_mode = True
-
-class ProvinceProceduresResponse(ProvinceCreate):
+    
+class ProvinceResponseCountry(ProvinceBase):
     id:int
-    procedures:list[ProcedureResponseCode] = []
+
+ 
 
 #---------------------------------------------------------------------#
 
-class CountryCreate(BaseModel):
-    name:str
-    code:str
-    
-
-class CountryResponse(CountryCreate):
-    id:int
-    provinces:list[ProvinceResponse] = [] 
+class CountryBase(BaseModel):
+    name: str
+    code: str
 
     class Config:
         orm_mode = True
+
+class CountryCreate(CountryBase):
+    pass
+
+   
+class CountryResponse(CountryBase):
+    id: int
+    provinces:list[ProvinceResponseCountry] = [] 
+
+    
 
 

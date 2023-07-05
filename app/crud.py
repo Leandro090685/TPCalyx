@@ -87,81 +87,22 @@ def is_exist_province_by_code(db: Session, code: str):
     return db.query(models.Province).filter(models.Province.code == code).first()
 
 
-
-def add_provinces_country(db: Session, code: str, country:str):
-    """
-    This function adds the provinces to the corresponding country
-    Args:
-        db (Session): database
-        code (str): code
-        country (str): country
-
-    Returns:
-        _type_: The country with the list of provinces
-    """
-    provinces = db.query(models.Province).filter(models.Province.country_code == code).all()
-    list_provinces = []
-    for province in provinces:
-        province_data = {
-            'id': province.id, 
-            'name': province.name, 
-            'code': province.code 
-        }
-        list_provinces.append(province_data)
-    data = {
-            'name': country.name,
-            'code': country.code, 
-            'id': country.id,
-            'provinces': list_provinces
-        }
-    return data
-
-def add_procedures_province(db:Session, code: str, province: str):
-    """
-    This function adds the procedures to the provinces
-    Args:
-        db (Session): database
-        code (str): code
-        province (str): province
-
-    Returns:
-        _type_: The provinces with the list of procedures
-    """
-    procedures = db.query(models.Procedure).filter(models.Procedure.province_code == code).all()
-    list_procedures = []
-    for procedure in procedures:
-        procedure_data = {
-            "id" : procedure.id,
-            "code_number" : procedure.code_number,
-            "type" : procedure.type
-        }
-        list_procedures.append(procedure_data)
-    data = {
-        'name': province.name,
-        'code': province.code,
-        'country_code': province.country_code,
-        'id': province.id,
-        'procedures': list_procedures 
-    }
-    return data
-
-
-
 def get_country_by_code(db: Session, code: str):
     """
-    This function is to search for a country by code
+    This function returns the country with the code that was received by parameter
+
     Args:
         db (Session): database
-        code (str): code country to search
+        code (str): country code
 
     Returns:
-        _type_: country with its list of provinces and otherwise returns none
+        _type_: Country if it exists or none if not exist 
     """
     country = db.query(models.Country).filter(models.Country.code == code).first()
     if country is not None:
-        final = add_provinces_country(db=db, code=code, country=country)
-        return final
+        return country
     return None
+    
 
    
 def get_all_countries(db: Session, skip: int = 0, limit: int =100):
@@ -175,15 +116,9 @@ def get_all_countries(db: Session, skip: int = 0, limit: int =100):
     Returns:
         _type_: All countries with their provinces
     """
-    all_countries = db.query(models.Country).offset(skip).limit(limit).all()
-    data = []
-    for i in all_countries:
-        country_final = add_provinces_country(db=db, code = i.code, country = i )
-        data.append(country_final)
-    return data
-
+    return db.query(models.Country).offset(skip).limit(limit).all()
     
-
+    
 def get_province_by_code(db: Session, code: str):
     """
     This function looks for a province by code
@@ -196,8 +131,7 @@ def get_province_by_code(db: Session, code: str):
     """
     province = db.query(models.Province).filter(models.Province.code == code).first()
     if province is not None:
-        final = add_procedures_province(db=db, code=code, province=province)
-        return final
+       return province
     return None
         
 
@@ -212,12 +146,8 @@ def get_all_provinces(db: Session, skip: int = 0, limit: int =100):
     Returns:
         _type_: All provinces with their procedures
     """
-    all_provinces = db.query(models.Province).offset(skip).limit(limit).all()
-    data = []
-    for i in all_provinces:
-        province_final = add_procedures_province(db=db, code = i.code, province= i)
-        data.append(province_final)
-    return data 
+    return db.query(models.Province).offset(skip).limit(limit).all()
+   
 
 def get_procedure_by_code(db: Session, code_number: str):
     """
@@ -260,14 +190,12 @@ def get_quantity_by_code(db:Session, code:str):
     """
     province = db.query(models.Province).filter(models.Province.code == code).first()
     if province is not None:
-        list = db.query(models.Procedure).filter(models.Procedure.province_code == code).all()
-
-        data = {
-            "province":province.__dict__['name'].upper(),
-            "procedures_quantity": len(list)
-        }
+        data = {"province" : province.name.upper(),
+                "procedures_quantity": len(province.procedures),
+                }
         return data
     return None
+
 
 def get_procedures_by_province(db:Session, code:str):
     """
@@ -279,16 +207,8 @@ def get_procedures_by_province(db:Session, code:str):
     Returns:
         _type_: The list of procedures of the province or None
     """
-    list = db.query(models.Procedure).filter(models.Procedure.province_code == code).all()
-    data_final = []
-    if list != []:
-        for i in list:
-            data = {
-                'id':i.id,
-                'code_number':i.code_number,
-                'type': i.type
-                }
-            data_final.append(data)
-        return data_final
+    procedures = db.query(models.Procedure).filter(models.Procedure.province_code == code).all()
+    if procedures != []:
+        return procedures
     return None
    
