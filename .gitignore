@@ -1,2 +1,8 @@
 .env
+.vscode
 __pycache__
+chromedriver
+report_logs.txt
+*csv
+*sqlite
+
