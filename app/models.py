@@ -22,7 +22,7 @@ class Province(Base):
     id = Column (Integer, primary_key=True, index=True)
     name = Column (String)
     code = Column (String, unique=True)
-    country_code = Column(String, ForeignKey(Country.code)) 
+    country_code = Column(String, ForeignKey(Country.code, ondelete="CASCADE"), nullable=False) 
 
     country = relationship ("Country", back_populates= "provinces")
     procedures = relationship("Procedure", back_populates="provinces")
@@ -34,7 +34,7 @@ class Procedure(Base):
     id = Column(Integer, primary_key=True, index=True)
     code_number = Column(String, unique=True)
     type = Column (String)
-    province_code = Column(String, ForeignKey(Province.code))
+    province_code = Column(String, ForeignKey(Province.code, ondelete="CASCADE"), nullable=False)
 
     provinces = relationship("Province", back_populates="procedures")
 
