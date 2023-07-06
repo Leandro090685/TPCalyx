@@ -30,8 +30,8 @@ class ProcedureQuantityProvince(BaseModel):
         orm_mode = True
 
     
-
 #---------------------------------------------------------------#
+
 class ProvinceBase(BaseModel):
     name: str
     code: str
@@ -52,7 +52,6 @@ class ProvinceResponseCountry(ProvinceBase):
     id:int
 
  
-
 #---------------------------------------------------------------------#
 
 class CountryBase(BaseModel):

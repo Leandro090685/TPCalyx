@@ -19,16 +19,6 @@ def create_procedure(db: Session, procedure: schemas.ProcedureCreate):
     db.refresh(db_procedure)
     return db_procedure
 
-def is_exist_procedure_by_code(db:Session, code:str):
-    """This function checks if there is a procedure with that code
-    Args:
-        db (_type_, optional): Database.
-        code (_type_, optional): code to verify
-
-    Returns:
-        _type_: Procedure with that code or None
-    """
-    return db.query(models.Procedure).filter(models.Procedure.code_number == code).first()
 
 def create_country(db:Session, country: schemas.CountryCreate):
     """
@@ -46,18 +36,6 @@ def create_country(db:Session, country: schemas.CountryCreate):
     db.refresh(db_country)
     return db_country
 
-def is_exist_country_by_code(db: Session, code: str):
-    """
-    This function checks if there is a country with that code
-    Args:
-        db (Session): database
-        code (str): code to verify
-
-    Returns:
-        _type_: country if it exists or none
-    """
-    return db.query(models.Country).filter(models.Country.code == code).first()
-
 def create_province(db:Session, province: schemas.ProvinceCreate):
     """
     This function is to create a province
@@ -74,17 +52,6 @@ def create_province(db:Session, province: schemas.ProvinceCreate):
     db.refresh(db_province)
     return db_province
 
-def is_exist_province_by_code(db: Session, code: str):
-    """
-    This function checks if there is a province with that code
-    Args:
-        db (Session): database
-        code (str): code to verify
-
-    Returns:
-        _type_: province if it exists or none
-    """
-    return db.query(models.Province).filter(models.Province.code == code).first()
 
 
 def get_country_by_code(db: Session, code: str):
@@ -96,12 +63,11 @@ def get_country_by_code(db: Session, code: str):
         code (str): country code
 
     Returns:
-        _type_: Country if it exists or none if not exist 
+        _type_: the country with that code
     """
-    country = db.query(models.Country).filter(models.Country.code == code).first()
-    if country is not None:
-        return country
-    return None
+    return db.query(models.Country).filter(models.Country.code == code).first()
+    
+    
     
 
    
@@ -114,7 +80,7 @@ def get_all_countries(db: Session, skip: int = 0, limit: int =100):
         limit (int, optional): _description_. Defaults to 100.
 
     Returns:
-        _type_: All countries with their provinces
+        _type_: All countries
     """
     return db.query(models.Country).offset(skip).limit(limit).all()
     
@@ -127,12 +93,10 @@ def get_province_by_code(db: Session, code: str):
         code (str): code of the province 
 
     Returns:
-        _type_: The province with its procedures and if the province does not exist, it returns None
+        _type_: the province with that code
     """
-    province = db.query(models.Province).filter(models.Province.code == code).first()
-    if province is not None:
-       return province
-    return None
+    return db.query(models.Province).filter(models.Province.code == code).first()
+    
         
 
 def get_all_provinces(db: Session, skip: int = 0, limit: int =100):
@@ -144,7 +108,7 @@ def get_all_provinces(db: Session, skip: int = 0, limit: int =100):
         limit (int, optional): _description_. Defaults to 100.
 
     Returns:
-        _type_: All provinces with their procedures
+        _type_: All provinces
     """
     return db.query(models.Province).offset(skip).limit(limit).all()
    
@@ -157,12 +121,10 @@ def get_procedure_by_code(db: Session, code_number: str):
         code_number (str): procedure code to look for
 
     Returns:
-        _type_: process if it exists or None
+        _type_: procedure with that code
     """
-    procedure = db.query(models.Procedure).filter(models.Procedure.code_number == code_number).first()
-    if procedure is not None:
-        return procedure
-    return None 
+    return db.query(models.Procedure).filter(models.Procedure.code_number == code_number).first()
+    
 
 def get_all_procedures(db: Session, skip: int = 0, limit: int =100):
     """
@@ -177,13 +139,13 @@ def get_all_procedures(db: Session, skip: int = 0, limit: int =100):
     """
     return db.query(models.Procedure).offset(skip).limit(limit).all()
 
-def get_quantity_by_code(db:Session, code:str):
+def get_quantity_by_province_code(db:Session, code:str):
     """
     This function is to know the number of procedures by province
 
     Args:
         db (Session): database
-        code (str): code province
+        code (str): province code
 
     Returns:
         _type_: Name of the province and number of procedures
@@ -197,18 +159,16 @@ def get_quantity_by_code(db:Session, code:str):
     return None
 
 
-def get_procedures_by_province(db:Session, code:str):
+def get_procedures_by_province_code(db:Session, code:str):
     """
     This function is to know the details of the procedures of a province
     Args:
         db (Session): database
-        code (str): code of province
+        code (str): province code
 
     Returns:
-        _type_: The list of procedures of the province or None
+        _type_: The list of procedures of the province
     """
-    procedures = db.query(models.Procedure).filter(models.Procedure.province_code == code).all()
-    if procedures != []:
-        return procedures
-    return None
+    return db.query(models.Procedure).filter(models.Procedure.province_code == code).all()
+   
    
